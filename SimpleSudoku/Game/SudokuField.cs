@@ -28,6 +28,20 @@ namespace SimpleSudoku.Game
             Cells = cells;
         }
 
+        public SudokuField(SudokuField field)
+        {
+            Cells = new SudokuCell[field.Cells.GetLength(0), field.Cells.GetLength(1)];
+            // copy cells from provided field
+            for (int row = 0; row < field.Cells.GetLength(0); row++)
+            {
+                for (int col = 0; col < field.Cells.GetLength(1); col++)
+                {
+                    Cells[row, col] = field.Cells[row, col].Copy();
+                }
+            }
+            Initialized = field.Initialized;
+        }
+
         public SudokuCell[] GetRow(int index) => Cells.GetRow(index);
         public SudokuCell[] GetColumn(int index) => Cells.GetColumn(index);
 

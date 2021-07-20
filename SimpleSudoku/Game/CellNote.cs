@@ -10,7 +10,8 @@ namespace SimpleSudoku.Game
         private int BitField { get; set; }
 
         public int[] Values => Enumerable.Range(1, 9)
-            .Where(x => (BitField & (1 << x - 1)) == 1)
+            .Where(x => (BitField & (1 << x - 1)) != 0
+            )
             .ToArray();
 
         public void Add(int value)
@@ -21,6 +22,16 @@ namespace SimpleSudoku.Game
         public void Remove(int value)
         {
             BitField &= ~(1 << value - 1);
+        }
+
+        public void Clear()
+        {
+            BitField = 0;
+        }
+
+        public void SetAll()
+        {
+            BitField = ~(1 << 10);
         }
     }
 }

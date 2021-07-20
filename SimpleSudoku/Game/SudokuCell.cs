@@ -20,7 +20,7 @@ namespace SimpleSudoku.Game
             Notes = new CellNote();
         }
 
-        internal SudokuCell(int row, int col, int value) : this(row, col)
+        internal SudokuCell(int row, int col, int? value) : this(row, col)
         {
             Value = value;
         }
@@ -38,6 +38,17 @@ namespace SimpleSudoku.Game
         public override string ToString()
         {
             return $"Cell[{Row},{Column}] = {Value}";
+        }
+
+        public virtual SudokuCell Copy()
+        {
+            var newCell = new SudokuCell(Row, Column, Value);
+            newCell.SetTrueValue(TrueValue);
+            foreach(var value in Notes.Values)
+            {
+                newCell.Notes.Add(value);
+            }
+            return newCell;
         }
     }
 }

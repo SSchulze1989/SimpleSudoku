@@ -91,9 +91,23 @@ namespace SimpleSudoku.Game
             Trace.WriteLine($"Creator finished after {tries} tries: ");
             DebugPrintField(field);
 #endif
+            // Set true values
+            foreach(var cell in field.Cells.To1DArray())
+            {
+                cell.SetTrueValue(cell.Value.Value);
+            }
+
+            // Randomly remove cell values
+            for (int i = 0; i < 15; i++)
+            {
+                var row = rand.Next(9);
+                var col = rand.Next(9);
+                field.Cells[row, col].Value = null;
+            }
 
             return field;
         }
+
 
         private void DebugPrintField(SudokuField field)
         {
