@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleSudoku.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,16 @@ namespace SimpleSudoku
         public MainWindow()
         {
             InitializeComponent();
+            StartGame();
+        }
+
+        public void StartGame()
+        {
+            var creator = new SudokuCreator();
+            for (int i = 0; i < 10; i++)
+            {
+                var field = creator.Create();
+            }
         }
     }
 }

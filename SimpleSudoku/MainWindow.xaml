@@ -3,10 +3,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:SimpleSudoku"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="620" Width="630">
+    <Window.Resources>
+        <GridLength x:Key="SudokuGridSpace">5</GridLength>
+    </Window.Resources>
     <Grid>
-
+        <DockPanel>
+            <Grid x:Name="MenuBar" DockPanel.Dock="Left">
+                
+            </Grid>
+            <Grid x:Name="Playground">
+                <Grid x:Name="SudokuGrid" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="{StaticResource SudokuGridSpace}" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="{StaticResource SudokuGridSpace}" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="{StaticResource SudokuGridSpace}"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="{StaticResource SudokuGridSpace}"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </Grid>
+        </DockPanel>
     </Grid>
 </Window>
