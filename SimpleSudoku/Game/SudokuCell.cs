@@ -22,7 +22,7 @@ namespace SimpleSudoku.Game
 
         internal SudokuCell(int row, int col, int value) : this(row, col)
         {
-            TrueValue = value;
+            Value = value;
         }
 
         internal void SetTrueValue(int value)

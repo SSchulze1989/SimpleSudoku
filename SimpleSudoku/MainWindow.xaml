@@ -4,34 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:local="clr-namespace:SimpleSudoku"
+        xmlns:local="clr-namespace:SimpleSudoku" xmlns:views="clr-namespace:SimpleSudoku.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="620" Width="630">
-    <Window.Resources>
-        <GridLength x:Key="SudokuGridSpace">5</GridLength>
-    </Window.Resources>
     <Grid>
         <DockPanel>
             <Grid x:Name="MenuBar" DockPanel.Dock="Left">
                 
             </Grid>
             <Grid x:Name="Playground">
-                <Grid x:Name="SudokuGrid" Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="{StaticResource SudokuGridSpace}" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="{StaticResource SudokuGridSpace}" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="{StaticResource SudokuGridSpace}"/>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="{StaticResource SudokuGridSpace}"/>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                </Grid>
+                <views:FieldView />
             </Grid>
         </DockPanel>
     </Grid>
