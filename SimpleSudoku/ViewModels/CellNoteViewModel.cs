@@ -28,6 +28,16 @@ namespace SimpleSudoku.ViewModels
             OnPropertyChanged(nameof(Values));
         }
 
+        public void SetValues(IEnumerable<int> values)
+        {
+            NoteModel.Clear();
+            foreach(var value in values)
+            {
+                NoteModel.Add(value);
+            }
+            OnPropertyChanged(nameof(values));
+        }
+
         public void Remove(int value)
         {
             NoteModel.Remove(value);
