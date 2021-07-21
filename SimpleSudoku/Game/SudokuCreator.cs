@@ -97,12 +97,19 @@ namespace SimpleSudoku.Game
                 cell.SetTrueValue(cell.Value.Value);
             }
 
+
             // Randomly remove cell values
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 var row = rand.Next(9);
                 var col = rand.Next(9);
+                var value = field.Cells[row, col].Value;
                 field.Cells[row, col].Value = null;
+                var solver = new SudokuSolver(field);
+                if (solver.Solve() == false)
+                {
+                    field.Cells[row, col].Value = value;
+                }
             }
 
             return field;
