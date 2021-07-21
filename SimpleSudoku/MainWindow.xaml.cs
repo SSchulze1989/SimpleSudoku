@@ -29,11 +29,11 @@ namespace SimpleSudoku
 
         public void StartGame()
         {
-            var creator = new SudokuCreator();
-            for (int i = 0; i < 10; i++)
-            {
-                var field = creator.Create();
-            }
+            //var creator = new SudokuCreator();
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    var field = creator.Create();
+            //}
         }
     }
 }

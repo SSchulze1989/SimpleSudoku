@@ -10,9 +10,9 @@
     <UserControl.Resources>
         <GridLength x:Key="SudokuGridSpace">4</GridLength>
     </UserControl.Resources>
-    <UserControl.DataContext>
+    <!--<UserControl.DataContext>
         <vm:SudokuFieldViewModel/>
-    </UserControl.DataContext>
+    </UserControl.DataContext>-->
     <Grid>
         <Grid x:Name="SudokuGrid" Margin="5">
             <Grid.RowDefinitions>
@@ -42,15 +42,15 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     
-                    <TextBox DataContext="{Binding Cells1D[0]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[1]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[2]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[9]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[10]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[11]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[18]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[19]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[20]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[0]}" Grid.Row="0" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[1]}" Grid.Row="0" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[2]}" Grid.Row="0" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[9]}" Grid.Row="1" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[10]}" Grid.Row="1" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[11]}" Grid.Row="1" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[18]}" Grid.Row="2" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[19]}" Grid.Row="2" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[20]}" Grid.Row="2" Grid.Column="2"/>
                 </Grid>
             </Border>
 
@@ -67,15 +67,15 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox DataContext="{Binding Cells1D[3]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[4]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[5]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[12]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[13]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[14]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[21]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[22]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[23]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[3]}" Grid.Row="0" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[4]}" Grid.Row="0" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[5]}" Grid.Row="0" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[12]}" Grid.Row="1" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[13]}" Grid.Row="1" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[14]}" Grid.Row="1" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[21]}" Grid.Row="2" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[22]}" Grid.Row="2" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[23]}" Grid.Row="2" Grid.Column="2"/>
                 </Grid>
             </Border>
 
@@ -92,15 +92,15 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox DataContext="{Binding Cells1D[6]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[7]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[8]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[15]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[16]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[17]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[24]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[25]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[26]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[6]}" Grid.Row="0" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[7]}" Grid.Row="0" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[8]}" Grid.Row="0" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[15]}" Grid.Row="1" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[16]}" Grid.Row="1" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[17]}" Grid.Row="1" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[24]}" Grid.Row="2" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[25]}" Grid.Row="2" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[26]}" Grid.Row="2" Grid.Column="2"/>
                 </Grid>
             </Border>
 
@@ -117,15 +117,15 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox DataContext="{Binding Cells1D[27]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[28]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[29]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[36]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[37]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[38]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[45]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[46]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[47]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[27]}" Grid.Row="0" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[28]}" Grid.Row="0" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[29]}" Grid.Row="0" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[36]}" Grid.Row="1" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[37]}" Grid.Row="1" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[38]}" Grid.Row="1" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[45]}" Grid.Row="2" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[46]}" Grid.Row="2" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[47]}" Grid.Row="2" Grid.Column="2"/>
                 </Grid>
             </Border>
 
@@ -142,15 +142,15 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox DataContext="{Binding Cells1D[30]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[31]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[32]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[39]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[40]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[41]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[48]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[49]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[50]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[30]}" Grid.Row="0" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[31]}" Grid.Row="0" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[32]}" Grid.Row="0" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[39]}" Grid.Row="1" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[40]}" Grid.Row="1" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[41]}" Grid.Row="1" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[48]}" Grid.Row="2" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[49]}" Grid.Row="2" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[50]}" Grid.Row="2" Grid.Column="2"/>
                 </Grid>
             </Border>
 
@@ -167,15 +167,15 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox DataContext="{Binding Cells1D[33]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[34]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[35]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[42]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[43]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[44]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[51]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[52]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[53]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[33]}" Grid.Row="0" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[34]}" Grid.Row="0" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[35]}" Grid.Row="0" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[42]}" Grid.Row="1" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[43]}" Grid.Row="1" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[44]}" Grid.Row="1" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[51]}" Grid.Row="2" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[52]}" Grid.Row="2" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[53]}" Grid.Row="2" Grid.Column="2"/>
                 </Grid>
             </Border>
 
@@ -192,15 +192,15 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox DataContext="{Binding Cells1D[54]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[55]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[56]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[63]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[64]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[65]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[72]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[73]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[74]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[54]}" Grid.Row="0" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[55]}" Grid.Row="0" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[56]}" Grid.Row="0" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[63]}" Grid.Row="1" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[64]}" Grid.Row="1" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[65]}" Grid.Row="1" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[72]}" Grid.Row="2" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[73]}" Grid.Row="2" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[74]}" Grid.Row="2" Grid.Column="2"/>
                 </Grid>
             </Border>
 
@@ -217,16 +217,16 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox DataContext="{Binding Cells1D[57]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[58]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[59]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[59]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[66]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[67]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[68]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[75]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[76]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[77]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[57]}" Grid.Row="0" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[58]}" Grid.Row="0" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[59]}" Grid.Row="0" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[59]}" Grid.Row="0" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[66]}" Grid.Row="1" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[67]}" Grid.Row="1" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[68]}" Grid.Row="1" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[75]}" Grid.Row="2" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[76]}" Grid.Row="2" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[77]}" Grid.Row="2" Grid.Column="2"/>
                 </Grid>
             </Border>
 
@@ -243,15 +243,15 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox DataContext="{Binding Cells1D[60]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[61]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[62]}" Text="{Binding Value}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[69]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[70]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[71]}" Text="{Binding Value}" Grid.Row="1" Grid.Column="2"/>
-                    <TextBox DataContext="{Binding Cells1D[78]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox DataContext="{Binding Cells1D[79]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox DataContext="{Binding Cells1D[80]}" Text="{Binding Value}" Grid.Row="2" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[60]}" Grid.Row="0" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[61]}" Grid.Row="0" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[62]}" Grid.Row="0" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[69]}" Grid.Row="1" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[70]}" Grid.Row="1" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[71]}" Grid.Row="1" Grid.Column="2"/>
+                    <local:CellControl DataContext="{Binding Cells1D[78]}" Grid.Row="2" Grid.Column="0"/>
+                    <local:CellControl DataContext="{Binding Cells1D[79]}" Grid.Row="2" Grid.Column="1"/>
+                    <local:CellControl DataContext="{Binding Cells1D[80]}" Grid.Row="2" Grid.Column="2"/>
                 </Grid>
             </Border>
             <Grid.Resources>

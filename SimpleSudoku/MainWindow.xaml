@@ -4,13 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:local="clr-namespace:SimpleSudoku" xmlns:views="clr-namespace:SimpleSudoku.Views"
+        xmlns:local="clr-namespace:SimpleSudoku" xmlns:views="clr-namespace:SimpleSudoku.Views" 
+        xmlns:vm="clr-namespace:SimpleSudoku.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="620" Width="630">
+        Title="MainWindow" Height="620" Width="680">
+    <Window.DataContext>
+        <vm:SudokuFieldViewModel />
+    </Window.DataContext>
     <Grid>
         <DockPanel>
             <Grid x:Name="MenuBar" DockPanel.Dock="Left">
-                
+                <StackPanel>
+                    <Button Content="Next" Command="{Binding SolveNext}" Width="60"/>
+                    <Button Content="Reset" Command="{Binding Reset}" Width="60" />
+                    <TextBlock Text="{Binding Level}" />
+                </StackPanel>
             </Grid>
             <Grid x:Name="Playground">
                 <views:FieldView />
