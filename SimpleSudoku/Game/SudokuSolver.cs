@@ -7,15 +7,13 @@ namespace SimpleSudoku.Game
 {
     public class SudokuSolver
     {
-        private SudokuField SolverField { get; set; }
+        public SudokuField SolverField { get; set; }
+        //private static int solverCycle { get; set; }
 
         public SudokuSolver(SudokuField field)
         {
             SolverField = new SudokuField(field);
-            foreach (var cell in SolverField.Cells.To1DArray())
-            {
-                cell.Notes.SetAll();
-            }
+            Reset();
         }
 
         private void SetNotesForCellValue(SudokuCell cell, int value)
@@ -37,32 +35,113 @@ namespace SimpleSudoku.Game
             }
         }
 
-        public void Solve()
+        public bool Solve()
         {
-            GetPossibleValues1();
-            GetPossibleValues2();
-            GetPossibleValues3();
+            while(Next())
+            {
+                FillSolutions();
+            }
+
+            return CheckSolved();
+        }
+
+        public bool Next()
+        {
+            return Next(out int level);
+        }
+
+        public void FillSolutions()
+        {
+            foreach(var cell in SolverField.Cells.To1DArray().Where(x => x.Notes.Values.Count() == 1))
+            {
+                cell.Value = cell.Notes.Values.First();
+            }
+        }
+
+        public bool CheckSolved()
+        {
+            bool solved = SolverField.Cells.To1DArray().Count(x => x.Value == null) == 0;
+            // validate solution
+            var validator = new SudokuValidator(SolverField);
+            solved &= validator.ValidateAll();
+
+            return solved;
+        }
+
+        public bool Next(out int level)
+        {
+            var changed = false;
+
+            changed |= GetPossibleValues1();
+            level = 1;
+            if (changed == false)
+            {
+                changed |= GetPossibleValues2();
+                level = 2;
+            }
+            if (changed == false)
+            { 
+                changed |= GetPossibleValues3();
+                level = 3;
+            }
+            if (changed == false)
+            {
+                level = -1;
+            }
+
+            return changed;
+        }
+
+        public void Reset()
+        {
+            foreach (var cell in SolverField.Cells.To1DArray())
+            {
+                cell.Notes.SetAll();
+            }
+        }
+
+        public void ApplyNotes(SudokuField field)
+        {
+            foreach(var trgCell in field.Cells.To1DArray())
+            {
+                var srcCell = SolverField.Cells[trgCell.Row, trgCell.Column];
+                trgCell.Notes.Clear();
+                foreach(var value in srcCell.Notes.Values)
+                {
+                    trgCell.Notes.Add(value);
+                }
+            }
         }
 
 
         /// <summary>
         /// Exclude possible values on first sight using the existing Values
         /// </summary>
-        private void GetPossibleValues1()
+        /// <returns><see langword="true"/> if a note hast been changed</returns>
+        private bool GetPossibleValues1()
         {
+            bool changed = false;
             // iterate over each cell that has a value
             foreach (var cell in SolverField.Cells.To1DArray().Where(x => x.Value != null))
             {
-                cell.Notes.Clear();
-                SetNotesForCellValue(cell, cell.Value.Value);   
+                if (cell.Notes.Values.Count() > 0)
+                {
+                    cell.Notes.Clear();
+                    SetNotesForCellValue(cell, cell.Value.Value);
+                    changed = true;
+                }
             }
+            return changed;
         }
 
         /// <summary>
         /// Exclude possible by finding unique missing numbers in row/column/block
         /// </summary>
-        private void GetPossibleValues2()
+        /// /// <returns><see langword="true"/> if a note hast been changed</returns>
+        private bool GetPossibleValues2()
         {
+            var changed = false;
+
             // iterate over each row and find unique values
             foreach(var row in SolverField.Rows)
             {
@@ -74,10 +153,11 @@ namespace SimpleSudoku.Game
                 {
                     // get cell with value in notes and exclude all other possiblities
                     var uniqueCell = row.SingleOrDefault(x => x.Notes.Values.Contains(uniqueValue));
-                    if (uniqueCell != null)
+                    if (uniqueCell != null && uniqueCell.Notes.Values.Count() > 1)
                     {
                         uniqueCell.Notes.Clear();
                         uniqueCell.Notes.Add(uniqueValue);
+                        changed = true;
                     }
                 }
             }
@@ -93,10 +173,11 @@ namespace SimpleSudoku.Game
                 {
                     // get cell with value in notes and exclude all other possiblities
                     var uniqueCell = column.SingleOrDefault(x => x.Notes.Values.Contains(uniqueValue));
-                    if (uniqueCell != null)
+                    if (uniqueCell != null && uniqueCell.Notes.Values.Count() > 1)
                     {
                         uniqueCell.Notes.Clear();
                         uniqueCell.Notes.Add(uniqueValue);
+                        changed = true;
                     }
                 }
             }
@@ -117,50 +198,70 @@ namespace SimpleSudoku.Game
                     var uniqueCell = block
                         .To1DArray()
                         .SingleOrDefault(x => x.Notes.Values.Contains(uniqueValue));
-                    if (uniqueCell != null)
+                    if (uniqueCell != null && uniqueCell.Notes.Values.Count() > 1)
                     {
                         uniqueCell.Notes.Clear();
                         uniqueCell.Notes.Add(uniqueValue);
+                        changed = true;
                     }
                 }
             }
+
+            return changed;
         }
 
         /// <summary>
         /// Exclude possible values by looking at the sub rows/columns of a block and the respective rows/columns
         /// </summary>
-        private void GetPossibleValues3()
+        /// /// <returns><see langword="true"/> if a note hast been changed</returns>
+        private bool GetPossibleValues3()
         {
+            var changed = false;
             // iterate over each block and then over each sub row/column
             for (int vIndex = 0; vIndex < 3; vIndex++)
             {
                 for (int hIndex = 0; hIndex < 3; hIndex++)
                 {
                     var block = SolverField.GetBlock(vIndex, hIndex);
+                    int vOffset = vIndex * 3;
+                    int hOffset = hIndex * 3;
 
                     // iterate over rows
                     foreach(var (subRow, index) in block.GetRows().WithIndex())
                     {
-                        var checkSubRows = Enumerable.Range(0, 3)
-                            .Where(x => x != vIndex)
-                            .Select(x => SolverField.GetSubRow(index, x));
+                        var rowSubRows = Enumerable.Range(0, 3)
+                            .Where(x => x != hIndex)
+                            .Select(x => SolverField.GetSubRow(index + vOffset, x));
                         // only check cells without value
-                        var checkCells = checkSubRows.SelectMany(x => x).Where(x => x.Value == null);
+                        var rowCheckCells = rowSubRows.SelectMany(x => x).Where(x => x.Value == null);
 
-                        var excludeSubRows = Enumerable.Range(0, 3)
+                        var blockSubRows = Enumerable.Range(0, 3)
                             .Where(x => x != index)
                             .Select(x => block.GetRow(x));
                         // only exclude cells without value
-                        var excludeCells = excludeSubRows.SelectMany(x => x).Where(x => x.Value == null);
+                        var blockCheckCells = blockSubRows.SelectMany(x => x).Where(x => x.Value == null);
 
                         // Check for values that appear in selected subrow but not in checkSubrows
                         var values = subRow.SelectMany(x => x.Notes.Values).Distinct();
                         foreach(var value in values)
                         {
-                            // if value is not found in any subrow
-                            if (checkCells.Any(x => x.Notes.Values.Contains(value) == false))
+                            // if value is not found in any subrow in row
+                            if (rowCheckCells.Any(x => x.Notes.Values.Contains(value)) == false)
                             {
-                                excludeCells.ForEach(x => x.Notes.Remove(value));
+                                if (blockCheckCells.Any(x => x.Notes.Values.Contains(value)))
+                                {
+                                    blockCheckCells.ForEach(x => x.Notes.Remove(value));
+                                    changed = true;
+                                }
+                            }
+                            // if value is not found in any subrow in block
+                            if (blockCheckCells.Any(x => x.Notes.Values.Contains(value)) == false)
+                            {
+                                if (rowCheckCells.Any(x => x.Notes.Values.Contains(value)))
+                                {
+                                    rowCheckCells.ForEach(x => x.Notes.Remove(value));
+                                    changed = true;
+                                }
                             }
                         }
                     }
@@ -168,32 +269,46 @@ namespace SimpleSudoku.Game
                     foreach (var (subColumn, index) in block.GetColumns().WithIndex())
                     {
                         // get subcolumns to compare with => 2 remaining subcolumns of this column
-                        var checkSubColumns = Enumerable.Range(0, 3)
-                            .Where(x => x != hIndex)
-                            .Select(x => SolverField.GetSubColumn(index, x));
+                        var columnSubColumns = Enumerable.Range(0, 3)
+                            .Where(x => x != vIndex)
+                            .Select(x => SolverField.GetSubColumn(index + hOffset, x));
                         // only check cells without value
-                        var checkCells = checkSubColumns.SelectMany(x => x).Where(x => x.Value == null);
+                        var columnCheckCells = columnSubColumns.SelectMany(x => x).Where(x => x.Value == null);
 
                         // get subcolumns that need to be set => 2 remaining subcolumns in this block
-                        var excludeSubColumns = Enumerable.Range(0, 3)
+                        var blockSubColumns = Enumerable.Range(0, 3)
                             .Where(x => x != index)
                             .Select(x => block.GetColumn(x));
                         // only exclude cells without value
-                        var excludeCells = excludeSubColumns.SelectMany(x => x).Where(x => x.Value == null);
+                        var blockCheckCells = blockSubColumns.SelectMany(x => x).Where(x => x.Value == null);
 
                         // Check for values that appear in selected subcolumn but not in checkSubcolumns
                         var values = subColumn.SelectMany(x => x.Notes.Values).Distinct();
                         foreach (var value in values)
                         {
                             // if value is not found in any subcolumn
-                            if (checkCells.Any(x => x.Notes.Values.Contains(value) == false))
+                            if (columnCheckCells.Any(x => x.Notes.Values.Contains(value)) == false)
                             {
-                                excludeCells.ForEach(x => x.Notes.Remove(value));
+                                if (blockCheckCells.Any(x => x.Notes.Values.Contains(value)))
+                                {
+                                    blockCheckCells.ForEach(x => x.Notes.Remove(value));
+                                    changed = true;
+                                }
+                            }
+                            // if value is not found in any subrow in block
+                            if (blockCheckCells.Any(x => x.Notes.Values.Contains(value)) == false)
+                            {
+                                if (columnCheckCells.Any(x => x.Notes.Values.Contains(value)))
+                                {
+                                    columnCheckCells.ForEach(x => x.Notes.Remove(value));
+                                    changed = true;
+                                }
                             }
                         }
                     }
                 }
             }
+            return changed;
         }
     }
 }
