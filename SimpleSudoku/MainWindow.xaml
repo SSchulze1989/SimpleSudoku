@@ -15,6 +15,7 @@
         <DockPanel>
             <Grid x:Name="MenuBar" DockPanel.Dock="Left">
                 <StackPanel>
+                    <Button Content="New" Command="{Binding New}" Width="60"/>
                     <Button Content="Next" Command="{Binding SolveNext}" Width="60"/>
                     <Button Content="Reset" Command="{Binding Reset}" Width="60" />
                     <TextBlock Text="{Binding Level}" />

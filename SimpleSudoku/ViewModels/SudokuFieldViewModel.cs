@@ -9,46 +9,23 @@ namespace SimpleSudoku.ViewModels
 {
     public class SudokuFieldViewModel : ViewModelBase
     {
-        private SudokuSolver Solver { get; }
-        private SudokuField FieldModel { get; }
+        private SudokuSolver Solver { get; set; }
+        private SudokuField FieldModel { get; set; }
         public SudokuCellViewModel[,] Cells { get; }
         public SudokuCellViewModel[] Cells1D => Cells.To1DArray();
 
         private int _level;
         public int Level { get => _level; set => SetValue(ref _level, value); }
 
+        public ICommand New { get; }
         public ICommand SolveNext { get; }
-
         public ICommand Reset { get; }
 
-        public SudokuFieldViewModel() : this(GetDefaultField())
+        public SudokuFieldViewModel()
         {
-            //Cells = new SudokuCellViewModel[9, 9];
-            //for (int i = 0; i < Cells.GetLength(0); i++)
-            //{
-            //    for (int j = 0; j < Cells.GetLength(1); j++)
-            //    {
-            //        Cells[i, j] = new SudokuCellViewModel();
-            //    }
-            //}
-
-            //SudokuCell[,] cells = new SudokuCell[9, 9];
-            //for (int i = 0; i < cells.GetLength(0); i++)
-            //{
-            //    for (int j = 0; j < cells.GetLength(1); j++)
-            //    {
-            //        cells[i, j] = new SudokuCell(i, j, i * 9 + j);
-            //    }
-            //}
-
-            //FieldModel = new SudokuField(cells);
-            //SetCells(FieldModel);
-        }
-
-        public SudokuFieldViewModel(SudokuField field)
-        {
-            SolveNext = new RelayCommand(o => SolveNextAction(), o => true);
-            Reset = new RelayCommand(o => ResetAction(), o => true);
+            New = new RelayCommand(o => NewAction(), o => true);
+            SolveNext = new RelayCommand(o => SolveNextAction(), o => FieldModel != null);
+            Reset = new RelayCommand(o => ResetAction(), o => FieldModel != null);
 
             Cells = new SudokuCellViewModel[9, 9];
             for (int i = 0; i < Cells.GetLength(0); i++)
@@ -59,6 +36,12 @@ namespace SimpleSudoku.ViewModels
                 }
             }
 
+            FieldModel = new SudokuField();
+            SetCells(FieldModel);
+        }
+
+        public SudokuFieldViewModel(SudokuField field) : this()
+        {
             FieldModel = field;
             SetCells(FieldModel);
             Solver = new SudokuSolver(field);
@@ -135,9 +118,24 @@ namespace SimpleSudoku.ViewModels
         {
             foreach(var cell in field.Cells.To1DArray())
             {
+                Cells[cell.Row, cell.Column].IsReadOnly = false;
                 Cells[cell.Row, cell.Column].SetCell(cell);
+                if (cell.Value != null)
+                {
+                    Cells[cell.Row, cell.Column].IsReadOnly = true;
+                }
             }
             OnPropertyChanged(nameof(Cells));
+        }
+
+        private void NewAction()
+        {
+            var creator = new SudokuCreator();
+            FieldModel = creator.Create();
+            SetCells(FieldModel);
+
+            Solver = new SudokuSolver(FieldModel);
+            OnPropertyChanged(null);
         }
 
         private void SolveNextAction()

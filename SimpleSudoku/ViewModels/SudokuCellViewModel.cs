@@ -17,11 +17,13 @@ namespace SimpleSudoku.ViewModels
         public int Column => CellModel.Column;
         public CellNoteViewModel Notes { get; }
 
+        private bool _isReadOnly;
+        public bool IsReadOnly { get => _isReadOnly; set => SetValue(ref _isReadOnly, value); }
+
         public bool Solved => Value == TrueValue || (Notes.Values.Count == 1 && Notes.Values.First() == TrueValue);
         public bool Wrong =>
             (Value != null && Value != TrueValue) ||
-            (Notes.Values.Count == 1 && Notes.Values.First() != TrueValue) ||
-            (Value == null && Notes.Values.Count != 1);
+            (Notes.Values.Count == 1 && Notes.Values.First() != TrueValue);
 
         private ObservableCollection<ValidationFail> _validationFails;
         public ObservableCollection<ValidationFail> ValidationFails { get => _validationFails; set => SetValue(ref _validationFails, value); }
@@ -43,7 +45,7 @@ namespace SimpleSudoku.ViewModels
         {
             CellModel = cell;
             Notes.SetNoteModel(CellModel.Notes);
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(Value));
         }
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
