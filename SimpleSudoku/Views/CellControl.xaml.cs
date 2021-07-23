@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SimpleSudoku.ViewModels;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +23,7 @@ namespace SimpleSudoku.Views
     {
         static Key[] NumKeys = new Key[]
         {
-                        Key.D0,
+            Key.D0,
             Key.D1,
             Key.D2,
             Key.D3,
@@ -43,6 +45,32 @@ namespace SimpleSudoku.Views
             Key.NumPad9,
         };
 
+        static Hashtable Key2NumberMap = new Hashtable()
+        {
+            { Key.D0, 0 },
+            { Key.D1, 1 },
+            { Key.D2, 2 },
+            { Key.D3, 3 },
+            { Key.D4, 4 },
+            { Key.D5, 5 },
+            { Key.D6, 6 },
+            { Key.D7, 7 },
+            { Key.D8, 8 },
+            { Key.D9, 9 },
+            { Key.NumPad0, 0 },
+            { Key.NumPad1, 1 },
+            { Key.NumPad2, 2 },
+            { Key.NumPad3, 3 },
+            { Key.NumPad4, 4 },
+            { Key.NumPad5, 5 },
+            { Key.NumPad6, 6 },
+            { Key.NumPad7, 7 },
+            { Key.NumPad8, 8 },
+            { Key.NumPad9, 9 }
+        };
+
+
+
         static Key[] AllowKeys = (new Key[]
         {
             Key.Delete,
@@ -59,6 +87,16 @@ namespace SimpleSudoku.Views
             InitializeComponent();
         }
 
+        private int GetNumberFromKey(Key key)
+        {
+            return (int)Key2NumberMap[key];
+        }
+
+        private bool CtrlPressed()
+        {
+            return Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+        }
+
         private void ValueTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (sender is TextBox textBox)
@@ -67,6 +105,22 @@ namespace SimpleSudoku.Views
                 {
                     if (NumKeys.Contains(e.Key) && textBox.IsReadOnly == false)
                     {
+                        if (CtrlPressed())
+                        {
+                            var number = GetNumberFromKey(e.Key);
+                            var cellVM = textBox.DataContext as SudokuCellViewModel;
+                            if (cellVM != null)
+                            {
+                                if (cellVM.Notes.Values.Contains(number))
+                                {
+                                    cellVM.Notes.Remove(number);
+                                }
+                                else
+                                {
+                                    cellVM.Notes.Add(number);
+                                }
+                            }
+                        }
                         textBox.Clear();
                     }
                     else
@@ -74,7 +128,18 @@ namespace SimpleSudoku.Views
                         switch (e.Key)
                         {
                             case Key.Delete:
-                                textBox.Clear();
+                                if (CtrlPressed())
+                                {
+                                    var cellVM = textBox.DataContext as SudokuCellViewModel;
+                                    if (cellVM != null)
+                                    {
+                                        cellVM.Notes.Clear();
+                                    }
+                                }
+                                else
+                                {
+                                    textBox.Clear();
+                                }
                                 break;
                             case Key.Left:
                                 textBox.MoveFocus(new TraversalRequest(FocusNavigationDirection.Left));

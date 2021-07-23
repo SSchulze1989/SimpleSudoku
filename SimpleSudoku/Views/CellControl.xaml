@@ -97,24 +97,27 @@
                 </Style>    
             </Grid.Style>
         </Grid>-->
-        <ItemsControl ItemsSource="{Binding Notes.Values}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" 
+        <Grid KeyboardNavigation.DirectionalNavigation="Contained">
+            <ItemsControl ItemsSource="{Binding Notes.Values}" Focusable="False" IsTabStop="False" KeyboardNavigation.DirectionalNavigation="None">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" 
                                ItemWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth, Converter={StaticResource ValuePercentageConverter}, ConverterParameter='0,33'}" 
                                ItemHeight="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualHeight, Converter={StaticResource ValuePercentageConverter}, ConverterParameter='0,33'}"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <!--<ItemsControl.Style>
-                <Style TargetType="ItemsControl">
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        </TextBlock>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Grid.Style>
+                <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Value}" Value="{x:Null}">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
                 </Style>
-            </ItemsControl.Style>-->
-        </ItemsControl>
+            </Grid.Style>
+        </Grid>
     </Grid>
 </UserControl>

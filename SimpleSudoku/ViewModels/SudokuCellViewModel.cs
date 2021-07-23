@@ -20,9 +20,7 @@ namespace SimpleSudoku.ViewModels
         public bool IsReadOnly => StartCell;
 
         public bool Solved => Value == TrueValue || (Notes.Values.Count == 1 && Notes.Values.First() == TrueValue);
-        public bool Wrong =>
-            (Value != null && Value != TrueValue) ||
-            (Notes.Values.Count == 1 && Notes.Values.First() != TrueValue);
+        public bool Wrong => (Value != null && Value != TrueValue);
 
         private ObservableCollection<ValidationFail> _validationFails;
         public ObservableCollection<ValidationFail> ValidationFails { get => _validationFails; set => SetValue(ref _validationFails, value); }
