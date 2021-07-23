@@ -99,16 +99,31 @@ namespace SimpleSudoku.Game
 
 
             // Randomly remove cell values
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 9*9; i++)
             {
-                var row = rand.Next(9);
-                var col = rand.Next(9);
-                var value = field.Cells[row, col].Value;
-                field.Cells[row, col].Value = null;
-                var solver = new SudokuSolver(field);
-                if (solver.Solve() == false)
+                bool deleted = false;
+                var tryCells = field.Cells.To1DArray().Where(x => x.Value != null).ToList();
+                while (tryCells.Count > 0)
                 {
-                    field.Cells[row, col].Value = value;
+                    var idx = rand.Next(tryCells.Count);
+                    var removeCell = tryCells[idx];
+                    var value = removeCell.Value;
+                    field.Cells[removeCell.Row, removeCell.Column].Value = null;
+                    tryCells.Remove(removeCell);
+                    var solver = new SudokuSolver(field);
+                    if (solver.Solve() == false)
+                    {
+                        field.Cells[removeCell.Row, removeCell.Column].Value = value;
+                    }
+                    else
+                    {
+                        deleted = true;
+                        break;
+                    }
+                }
+                if (deleted == false)
+                {
+                    break;
                 }
             }
 

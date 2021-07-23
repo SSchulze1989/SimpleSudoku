@@ -39,7 +39,7 @@ namespace SimpleSudoku.Game
         {
             while(Next())
             {
-                FillSolutions();
+                //FillSolutions();
             }
 
             return CheckSolved();
@@ -60,7 +60,7 @@ namespace SimpleSudoku.Game
 
         public bool CheckSolved()
         {
-            bool solved = SolverField.Cells.To1DArray().Count(x => x.Value == null) == 0;
+            bool solved = SolverField.Cells.To1DArray().Count(x => x.Value == null && x.Notes.Values.Count() != 1) == 0;
             // validate solution
             var validator = new SudokuValidator(SolverField);
             solved &= validator.ValidateAll();
