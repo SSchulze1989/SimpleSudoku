@@ -18,6 +18,8 @@
                     <Button Content="New" Command="{Binding New}" Width="60"/>
                     <Button Content="Next" Command="{Binding SolveNext}" Width="60"/>
                     <Button Content="Reset" Command="{Binding Reset}" Width="60" />
+                    <Button Content="Save" Click="SaveButton_Click" Width="60"/>
+                    <Button Content="Load" Click="LoadButton_Click" Width="60"/>
                     <TextBlock Text="{Binding Level}" />
                 </StackPanel>
             </Grid>

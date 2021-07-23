@@ -16,9 +16,8 @@ namespace SimpleSudoku.ViewModels
         public int Row => CellModel.Row;
         public int Column => CellModel.Column;
         public CellNoteViewModel Notes { get; }
-
-        private bool _isReadOnly;
-        public bool IsReadOnly { get => _isReadOnly; set => SetValue(ref _isReadOnly, value); }
+        public bool StartCell => CellModel.StartCell;
+        public bool IsReadOnly => StartCell;
 
         public bool Solved => Value == TrueValue || (Notes.Values.Count == 1 && Notes.Values.First() == TrueValue);
         public bool Wrong =>
@@ -46,6 +45,7 @@ namespace SimpleSudoku.ViewModels
             CellModel = cell;
             Notes.SetNoteModel(CellModel.Notes);
             OnPropertyChanged(nameof(Value));
+            OnPropertyChanged(nameof(StartCell));
         }
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
@@ -55,6 +55,9 @@ namespace SimpleSudoku.ViewModels
                 case nameof(Value):
                     OnPropertyChanged(nameof(Solved));
                     OnPropertyChanged(nameof(Wrong));
+                    break;
+                case nameof(StartCell):
+                    OnPropertyChanged(nameof(IsReadOnly));
                     break;
                 default:
                     break;

@@ -28,6 +28,12 @@ namespace SimpleSudoku.ViewModels
             OnPropertyChanged(nameof(Values));
         }
 
+        public void Clear()
+        {
+            NoteModel.Clear();
+            OnPropertyChanged(nameof(Values));
+        }
+
         public void SetValues(IEnumerable<int> values)
         {
             NoteModel.Clear();

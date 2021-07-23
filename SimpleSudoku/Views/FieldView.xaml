@@ -14,7 +14,7 @@
         <vm:SudokuFieldViewModel/>
     </UserControl.DataContext>-->
     <Grid>
-        <Grid x:Name="SudokuGrid" Margin="5">
+        <Grid x:Name="SudokuGrid" Margin="5" KeyboardNavigation.DirectionalNavigation="Cycle">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="{StaticResource SudokuGridSpace}" />

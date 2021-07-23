@@ -10,6 +10,7 @@
              d:DesignHeight="30" d:DesignWidth="30" Background="White">
     <UserControl.Resources>
         <conv:ValuePercentageConverter x:Key="ValuePercentageConverter"/>
+        <conv:NotNullConverter x:Key="NotNullConverter"/>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="12" />
             <Setter Property="Background" Value="Transparent" />
@@ -45,9 +46,13 @@
             <Setter Property="Template" Value="{StaticResource CellTextBox}"/>
             <Setter Property="BorderThickness" Value="1" />
             <Style.Triggers>
+                <DataTrigger Binding="{Binding Value, Converter={StaticResource NotNullConverter}}" Value="True">
+                    <Setter Property="Background" Value="#55F5DEB3"/>
+                </DataTrigger>
                 <DataTrigger Binding="{Binding Wrong}" Value="True">
                     <!--<Setter Property="BorderBrush" Value="Red"/>-->
                     <Setter Property="Foreground" Value="Red"/>
+                    <Setter Property="Background" Value="#11FF0000"/>
                 </DataTrigger>
                 <Trigger Property="IsReadOnly" Value="True">
                     <Setter Property="FontWeight" Value="Bold"/>

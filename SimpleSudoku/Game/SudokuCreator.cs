@@ -33,6 +33,7 @@ namespace SimpleSudoku.Game
                     {
                         var tryValues = new List<int>(Enumerable.Range(1, 9));
                         var cell = field.Cells[row, col];
+                        cell.SetStartCell(true);
                         tryValues.RemoveMany(field
                             .GetRow(cell.Row)
                             .Where(x => x.Value != null)
@@ -108,15 +109,16 @@ namespace SimpleSudoku.Game
                     var idx = rand.Next(tryCells.Count);
                     var removeCell = tryCells[idx];
                     var value = removeCell.Value;
-                    field.Cells[removeCell.Row, removeCell.Column].Value = null;
+                    removeCell.Value = null;
                     tryCells.Remove(removeCell);
                     var solver = new SudokuSolver(field);
                     if (solver.Solve() == false)
                     {
-                        field.Cells[removeCell.Row, removeCell.Column].Value = value;
+                        removeCell.Value = value;
                     }
                     else
                     {
+                        removeCell.SetStartCell(false);
                         deleted = true;
                         break;
                     }

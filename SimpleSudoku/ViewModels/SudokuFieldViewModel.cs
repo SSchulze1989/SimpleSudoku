@@ -20,12 +20,14 @@ namespace SimpleSudoku.ViewModels
         public ICommand New { get; }
         public ICommand SolveNext { get; }
         public ICommand Reset { get; }
+        public ICommand Save { get; }
 
         public SudokuFieldViewModel()
         {
             New = new RelayCommand(o => NewAction(), o => true);
             SolveNext = new RelayCommand(o => SolveNextAction(), o => FieldModel != null);
             Reset = new RelayCommand(o => ResetAction(), o => FieldModel != null);
+            Save = new RelayCommand(o => SaveAction(), o => FieldModel != null);
 
             Cells = new SudokuCellViewModel[9, 9];
             for (int i = 0; i < Cells.GetLength(0); i++)
@@ -36,15 +38,20 @@ namespace SimpleSudoku.ViewModels
                 }
             }
 
-            FieldModel = new SudokuField();
-            SetCells(FieldModel);
+            SetFieldModel(new SudokuField());
         }
 
         public SudokuFieldViewModel(SudokuField field) : this()
         {
+            SetFieldModel(field);
+        }
+
+        private void SetFieldModel(SudokuField field)
+        {
             FieldModel = field;
-            SetCells(FieldModel);
+            SetCells(field);
             Solver = new SudokuSolver(field);
+            OnPropertyChanged(null);
         }
 
         private static SudokuField GetDefaultField()
@@ -118,12 +125,7 @@ namespace SimpleSudoku.ViewModels
         {
             foreach(var cell in field.Cells.To1DArray())
             {
-                Cells[cell.Row, cell.Column].IsReadOnly = false;
                 Cells[cell.Row, cell.Column].SetCell(cell);
-                if (cell.Value != null)
-                {
-                    Cells[cell.Row, cell.Column].IsReadOnly = true;
-                }
             }
             OnPropertyChanged(nameof(Cells));
         }
@@ -131,11 +133,7 @@ namespace SimpleSudoku.ViewModels
         private void NewAction()
         {
             var creator = new SudokuCreator();
-            FieldModel = creator.Create();
-            SetCells(FieldModel);
-
-            Solver = new SudokuSolver(FieldModel);
-            OnPropertyChanged(null);
+            SetFieldModel(creator.Create());
         }
 
         private void SolveNextAction()
@@ -158,12 +156,28 @@ namespace SimpleSudoku.ViewModels
             Solver.Reset();
             foreach (var cell in Cells1D)
             {
-                cell.Notes.SetValues(Solver.SolverField.Cells[cell.Row, cell.Column].Notes.Values);
+                if (cell.StartCell == false)
+                {
+                    cell.Value = null;
+                }
+                cell.Notes.Clear();
                 //if (cell.Notes.Values.Count == 1)
                 //{
                 //    cell.Value = cell.Notes.Values.First();
                 //}
             }
+        }
+
+        public string SaveAction()
+        {
+            var data = FieldModel.Save();
+            return data;
+        }
+
+        public void LoadAction(string data)
+        {
+            var field = SudokuField.Load(data);
+            SetFieldModel(field);
         }
     }
 }
