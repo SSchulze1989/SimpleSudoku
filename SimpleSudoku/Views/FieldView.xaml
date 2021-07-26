@@ -4,11 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:SimpleSudoku.ViewModels"
-             xmlns:local="clr-namespace:SimpleSudoku.Views"
+             xmlns:local="clr-namespace:SimpleSudoku.Views" 
+             xmlns:conv="clr-namespace:SimpleSudoku.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="500" Background="Wheat">
     <UserControl.Resources>
         <GridLength x:Key="SudokuGridSpace">4</GridLength>
+        <conv:ValuePercentageConverter x:Key="ValuePercentageConverter" />
+        <DataTemplate x:Key="CellTemplate">
+            <local:CellControl Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
+        </DataTemplate>
+        <DataTemplate x:Key="BlockTemplate">
+            <Grid>
+                <ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource CellTemplate}" Focusable="False" KeyboardNavigation.DirectionalNavigation="Continue">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"
+                                    ItemWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualWidth, Converter={StaticResource ValuePercentageConverter}, ConverterParameter='0,3333333'}" 
+                                    ItemHeight="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}, Path=ActualHeight, Converter={StaticResource ValuePercentageConverter}, ConverterParameter='0,3333333'}"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
     </UserControl.Resources>
     <!--<UserControl.DataContext>
         <vm:SudokuFieldViewModel/>
@@ -30,229 +48,39 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Border x:Name="Box1" BorderBrush="Black" BorderThickness="2" Margin="-2" Grid.Row="0" Grid.Column="0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    
-                    <local:CellControl DataContext="{Binding Cells1D[0]}" Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[1]}" Grid.Row="0" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[2]}" Grid.Row="0" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[9]}" Grid.Row="1" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[10]}" Grid.Row="1" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[11]}" Grid.Row="1" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[18]}" Grid.Row="2" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[19]}" Grid.Row="2" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[20]}" Grid.Row="2" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                </Grid>
+                <ContentControl Content="{Binding Blocks1D[0]}" ContentTemplate="{StaticResource BlockTemplate}"/>
             </Border>
 
             <Border x:Name="Box2" BorderBrush="Black" BorderThickness="2" Margin="-2" Grid.Row="0" Grid.Column="2">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <local:CellControl DataContext="{Binding Cells1D[3]}" Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[4]}" Grid.Row="0" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[5]}" Grid.Row="0" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[12]}" Grid.Row="1" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[13]}" Grid.Row="1" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[14]}" Grid.Row="1" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[21]}" Grid.Row="2" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[22]}" Grid.Row="2" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[23]}" Grid.Row="2" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                </Grid>
+                <ContentControl Content="{Binding Blocks1D[1]}" ContentTemplate="{StaticResource BlockTemplate}"/>
             </Border>
 
             <Border x:Name="Box3" BorderBrush="Black" BorderThickness="2" Margin="-2" Grid.Row="0" Grid.Column="4">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <local:CellControl DataContext="{Binding Cells1D[6]}" Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[7]}" Grid.Row="0" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[8]}" Grid.Row="0" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[15]}" Grid.Row="1" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[16]}" Grid.Row="1" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[17]}" Grid.Row="1" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[24]}" Grid.Row="2" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[25]}" Grid.Row="2" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[26]}" Grid.Row="2" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                </Grid>
+                <ContentControl Content="{Binding Blocks1D[2]}" ContentTemplate="{StaticResource BlockTemplate}"/>
             </Border>
 
             <Border x:Name="Box4" BorderBrush="Black" BorderThickness="2" Margin="-2" Grid.Row="2" Grid.Column="0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <local:CellControl DataContext="{Binding Cells1D[27]}" Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[28]}" Grid.Row="0" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[29]}" Grid.Row="0" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[36]}" Grid.Row="1" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[37]}" Grid.Row="1" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[38]}" Grid.Row="1" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[45]}" Grid.Row="2" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[46]}" Grid.Row="2" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[47]}" Grid.Row="2" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                </Grid>
+                <ContentControl Content="{Binding Blocks1D[3]}" ContentTemplate="{StaticResource BlockTemplate}"/>
             </Border>
 
             <Border x:Name="Box5" BorderBrush="Black" BorderThickness="2" Margin="-2" Grid.Row="2" Grid.Column="2">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <local:CellControl DataContext="{Binding Cells1D[30]}" Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[31]}" Grid.Row="0" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[32]}" Grid.Row="0" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[39]}" Grid.Row="1" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[40]}" Grid.Row="1" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[41]}" Grid.Row="1" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[48]}" Grid.Row="2" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[49]}" Grid.Row="2" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[50]}" Grid.Row="2" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                </Grid>
+                <ContentControl Content="{Binding Blocks1D[4]}" ContentTemplate="{StaticResource BlockTemplate}"/>
             </Border>
 
             <Border x:Name="Box6" BorderBrush="Black" BorderThickness="2" Margin="-2" Grid.Row="2" Grid.Column="4">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <local:CellControl DataContext="{Binding Cells1D[33]}" Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[34]}" Grid.Row="0" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[35]}" Grid.Row="0" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[42]}" Grid.Row="1" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[43]}" Grid.Row="1" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[44]}" Grid.Row="1" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[51]}" Grid.Row="2" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[52]}" Grid.Row="2" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[53]}" Grid.Row="2" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                </Grid>
+                <ContentControl Content="{Binding Blocks1D[5]}" ContentTemplate="{StaticResource BlockTemplate}"/>
             </Border>
 
             <Border x:Name="Box7" BorderBrush="Black" BorderThickness="2" Margin="-2" Grid.Row="4" Grid.Column="0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <local:CellControl DataContext="{Binding Cells1D[54]}" Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[55]}" Grid.Row="0" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[56]}" Grid.Row="0" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[63]}" Grid.Row="1" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[64]}" Grid.Row="1" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[65]}" Grid.Row="1" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[72]}" Grid.Row="2" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[73]}" Grid.Row="2" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[74]}" Grid.Row="2" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                </Grid>
+                <ContentControl Content="{Binding Blocks1D[6]}" ContentTemplate="{StaticResource BlockTemplate}"/>
             </Border>
 
             <Border x:Name="Box8" BorderBrush="Black" BorderThickness="2" Margin="-2" Grid.Row="4" Grid.Column="2">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <local:CellControl DataContext="{Binding Cells1D[57]}" Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[58]}" Grid.Row="0" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[59]}" Grid.Row="0" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[59]}" Grid.Row="0" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[66]}" Grid.Row="1" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[67]}" Grid.Row="1" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[68]}" Grid.Row="1" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[75]}" Grid.Row="2" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[76]}" Grid.Row="2" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[77]}" Grid.Row="2" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                </Grid>
+                <ContentControl Content="{Binding Blocks1D[7]}" ContentTemplate="{StaticResource BlockTemplate}"/>
             </Border>
 
             <Border x:Name="Box9" BorderBrush="Black" BorderThickness="2" Margin="-2" Grid.Row="4" Grid.Column="4">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <local:CellControl DataContext="{Binding Cells1D[60]}" Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[61]}" Grid.Row="0" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[62]}" Grid.Row="0" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[69]}" Grid.Row="1" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[70]}" Grid.Row="1" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[71]}" Grid.Row="1" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[78]}" Grid.Row="2" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[79]}" Grid.Row="2" Grid.Column="1" KeyboardNavigation.DirectionalNavigation="Once"/>
-                    <local:CellControl DataContext="{Binding Cells1D[80]}" Grid.Row="2" Grid.Column="2" KeyboardNavigation.DirectionalNavigation="Once"/>
-                </Grid>
+                <ContentControl Content="{Binding Blocks1D[8]}" ContentTemplate="{StaticResource BlockTemplate}"/>
             </Border>
             <Grid.Resources>
                 <Style TargetType="TextBox">

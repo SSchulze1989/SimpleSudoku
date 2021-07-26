@@ -12,7 +12,10 @@ namespace SimpleSudoku.ViewModels
         private SudokuSolver Solver { get; set; }
         private SudokuField FieldModel { get; set; }
         public SudokuCellViewModel[,] Cells { get; }
-        public SudokuCellViewModel[] Cells1D => Cells.To1DArray();
+        public SudokuCellViewModel[] Cells1D { get; }
+
+        public SudokuCellViewModel[][,] Blocks { get; }
+        public SudokuCellViewModel[][] Blocks1D { get; }
 
         private int _level;
         public int Level { get => _level; set => SetValue(ref _level, value); }
@@ -37,6 +40,22 @@ namespace SimpleSudoku.ViewModels
                     Cells[i, j] = new SudokuCellViewModel();
                 }
             }
+            Cells1D = Cells.To1DArray();
+            Blocks = new SudokuCellViewModel[9][,];
+            for (int i = 0; i<Blocks.Length; i++)
+            {
+                Blocks[i] = new SudokuCellViewModel[3, 3];
+                for (int row = 0; row<Blocks[i].GetLength(0); row++)
+                {
+                    for (int col = 0; col<Blocks[i].GetLength(1); col++)
+                    {
+                        int cellRow = row + (i / 3) * 3;
+                        int cellCol = col + (i % 3) * 3;
+                        Blocks[i][row, col] = Cells[cellRow, cellCol];
+                    }
+                }
+            }
+            Blocks1D = Blocks.Select(x => x.To1DArray()).ToArray();
 
             SetFieldModel(new SudokuField());
         }
@@ -127,7 +146,6 @@ namespace SimpleSudoku.ViewModels
             {
                 Cells[cell.Row, cell.Column].SetCell(cell);
             }
-            OnPropertyChanged(nameof(Cells));
         }
 
         private void NewAction()
