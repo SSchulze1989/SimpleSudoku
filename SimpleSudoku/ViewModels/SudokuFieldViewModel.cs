@@ -24,6 +24,7 @@ namespace SimpleSudoku.ViewModels
         public ICommand SolveNext { get; }
         public ICommand Reset { get; }
         public ICommand Save { get; }
+        public ICommand Hint { get; }
 
         public SudokuFieldViewModel()
         {
@@ -31,6 +32,7 @@ namespace SimpleSudoku.ViewModels
             SolveNext = new RelayCommand(o => SolveNextAction(), o => FieldModel != null);
             Reset = new RelayCommand(o => ResetAction(), o => FieldModel != null);
             Save = new RelayCommand(o => SaveAction(), o => FieldModel != null);
+            Hint = new RelayCommand(o => HintAction(), o => FieldModel != null);
 
             Cells = new SudokuCellViewModel[9, 9];
             for (int i = 0; i < Cells.GetLength(0); i++)
@@ -196,6 +198,19 @@ namespace SimpleSudoku.ViewModels
         {
             var field = SudokuField.Load(data);
             SetFieldModel(field);
+        }
+
+        public void HintAction()
+        {
+            // clear previous hints
+            Cells1D.ForEach(x => x.Hint = null);
+
+            // get hint from solver
+            Solver = new SudokuSolver(FieldModel);
+            var hint = Solver.GetHint();
+
+            // set hint cell
+            Cells[hint.Row, hint.Column].Hint = hint.Value;
         }
     }
 }

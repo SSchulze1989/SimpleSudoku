@@ -12,7 +12,9 @@
         <GridLength x:Key="SudokuGridSpace">4</GridLength>
         <conv:ValuePercentageConverter x:Key="ValuePercentageConverter" />
         <DataTemplate x:Key="CellTemplate">
-            <local:CellControl Grid.Row="0" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Once"/>
+            <Grid>
+                <local:CellControl KeyboardNavigation.DirectionalNavigation="Once"/>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:Key="BlockTemplate">
             <Grid>

@@ -50,12 +50,35 @@ namespace SimpleSudoku.Game
             return Next(out int level);
         }
 
-        public void FillSolutions()
+        public SudokuCell GetHint()
         {
+            IEnumerable<SudokuCell> hintCells = new SudokuCell[0];
+
+            while (hintCells.Count() == 0 && Next())
+            {
+                hintCells = FillSolutions();
+            }
+
+            if (hintCells.Count() == 0)
+            {
+                return null;
+            }
+
+            var rand = new Random();
+            return hintCells.ElementAt(rand.Next(hintCells.Count()));
+        }
+
+
+
+        public SudokuCell[] FillSolutions()
+        {
+            var filledCells = new List<SudokuCell>();
             foreach(var cell in SolverField.Cells.To1DArray().Where(x => x.Notes.Values.Count() == 1))
             {
                 cell.Value = cell.Notes.Values.First();
+                filledCells.Add(cell);
             }
+            return filledCells.ToArray();
         }
 
         public bool CheckSolved()

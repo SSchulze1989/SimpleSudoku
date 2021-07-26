@@ -11,12 +11,17 @@
     <UserControl.Resources>
         <conv:ValuePercentageConverter x:Key="ValuePercentageConverter"/>
         <conv:NotNullConverter x:Key="NotNullConverter"/>
-        <Style TargetType="TextBlock">
+        <Style x:Key="NotesTextblockStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="12" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="Gray" />
             <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="26" />
+            <Setter Property="FontWeight" Value="Normal"/>
         </Style>
         <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
         <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
@@ -108,7 +113,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource NotesTextblockStyle}">
                         </TextBlock>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -119,6 +124,22 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Value, Converter={StaticResource NotNullConverter}}" Value="True">
                             <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+        </Grid>
+        <Grid DataContext="{Binding Hint}" IsHitTestVisible="False" Focusable="False">
+            <Border BorderThickness="0" Background="#1000FF00">
+                <TextBlock x:Name="Hint" Text="{Binding}" Foreground="#80AAAAAA"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Border>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Converter={StaticResource NotNullConverter}}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
