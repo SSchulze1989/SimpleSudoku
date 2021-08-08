@@ -19,6 +19,18 @@
                     <Button Content="Next" Command="{Binding SolveNext}" Width="60"/>
                     <Button Content="Hint" Command="{Binding Hint}" Width="60"/>
                     <Button Content="Reset" Command="{Binding Reset}" Width="60" />
+                    <Button Click="EditButton_Click" Width="60">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                <Setter Property="Content" Value="Edit"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                        <Setter Property="Content" Value="Finish"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                     <Button Content="Save" Click="SaveButton_Click" Width="60"/>
                     <Button Content="Load" Click="LoadButton_Click" Width="60"/>
                     <TextBlock Text="{Binding Level}" />

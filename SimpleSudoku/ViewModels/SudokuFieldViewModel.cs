@@ -20,6 +20,10 @@ namespace SimpleSudoku.ViewModels
         private int _level;
         public int Level { get => _level; set => SetValue(ref _level, value); }
 
+        private SudokuField EditField { get; set; }
+        private bool _isEditing;
+        public bool IsEditing { get => _isEditing; private set => SetValue(ref _isEditing, value); }
+
         public ICommand New { get; }
         public ICommand SolveNext { get; }
         public ICommand Reset { get; }
@@ -29,10 +33,10 @@ namespace SimpleSudoku.ViewModels
         public SudokuFieldViewModel()
         {
             New = new RelayCommand(o => NewAction(), o => true);
-            SolveNext = new RelayCommand(o => SolveNextAction(), o => FieldModel != null);
-            Reset = new RelayCommand(o => ResetAction(), o => FieldModel != null);
+            SolveNext = new RelayCommand(o => SolveNextAction(), o => Solver != null);
+            Reset = new RelayCommand(o => ResetAction(), o => Solver != null);
             Save = new RelayCommand(o => SaveAction(), o => FieldModel != null);
-            Hint = new RelayCommand(o => HintAction(), o => FieldModel != null);
+            Hint = new RelayCommand(o => HintAction(), o => Solver != null);
 
             Cells = new SudokuCellViewModel[9, 9];
             for (int i = 0; i < Cells.GetLength(0); i++)
@@ -69,6 +73,7 @@ namespace SimpleSudoku.ViewModels
 
         private void SetFieldModel(SudokuField field)
         {
+            IsEditing = false;
             FieldModel = field;
             SetCells(field);
             Solver = new SudokuSolver(field);
@@ -206,11 +211,100 @@ namespace SimpleSudoku.ViewModels
             Cells1D.ForEach(x => x.Hint = null);
 
             // get hint from solver
-            Solver = new SudokuSolver(FieldModel);
+            Solver.Reset();
             var hint = Solver.GetHint();
 
             // set hint cell
             Cells[hint.Row, hint.Column].Hint = hint.Value;
+        }
+
+        public void StartEditing()
+        {
+            if (IsEditing)
+            {
+                return;
+            }
+
+            // Make a copy of the current field
+            EditField = new SudokuField(FieldModel);
+            foreach(var cell in EditField.Cells.To1DArray())
+            {
+                if (cell.IsStartCell == false)
+                {
+                    cell.Value = null;
+                }
+                cell.Notes.Clear();
+                cell.SetTrueValue(0);
+                cell.SetStartCell(false);
+            }
+            SetFieldModel(EditField);
+            Solver = null;
+            OnPropertyChanged(null);
+
+            IsEditing = true;
+        }
+
+        /// <summary>
+        /// Finish editing a sudoku. This will validate the sudoku and try to solve it
+        /// </summary>
+        /// <param name="validationFails"></param>
+        /// <returns><see langword="true"/> if sudoku field is valid an can be solved.</returns>
+        public bool FinishEditing(out IEnumerable<ValidationFail> validationFails)
+        {
+            validationFails = new ValidationFail[0];
+            if (IsEditing == false)
+            {
+                return true;
+            }
+
+            var validator = new SudokuValidator(EditField);
+            validator.ValidateAll();
+            if (validator.ValidationFailed)
+            {
+                validationFails = validator.ValidationFails;
+                return false;
+            }
+
+            var solver = new SudokuSolver(EditField);
+            if (solver.Solve() == false)
+            {
+                solver.ApplyNotes(EditField);
+                //return false;
+            }
+
+            foreach(var cell in EditField.Cells.To1DArray())
+            {
+                if (cell.Value != null)
+                {
+                    cell.SetStartCell(true);
+                    cell.SetTrueValue(cell.Value.Value);
+                }
+            }
+
+            var trueValues = solver.FillSolutions();
+            foreach(var valueCell in trueValues)
+            {
+                EditField.Cells[valueCell.Row, valueCell.Column].SetTrueValue(valueCell.Value.GetValueOrDefault());
+            }
+
+            // Check if all cells have a true value
+            if (EditField.Cells.To1DArray().Any(x => x.TrueValue == 0))
+            {
+                //throw new Exception("Sudoku editing failed!");
+            }
+
+            SetFieldModel(EditField);
+            EditField = null;
+
+            IsEditing = false;
+            return true;
+        }
+
+        public void CancelEditing()
+        {
+            SetFieldModel(FieldModel);
+
+            IsEditing = false;
         }
     }
 }

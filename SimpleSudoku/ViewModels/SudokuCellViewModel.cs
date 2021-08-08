@@ -16,11 +16,11 @@ namespace SimpleSudoku.ViewModels
         public int Row => CellModel.Row;
         public int Column => CellModel.Column;
         public CellNoteViewModel Notes { get; }
-        public bool StartCell => CellModel.StartCell;
+        public bool StartCell => CellModel.IsStartCell;
         public bool IsReadOnly => StartCell;
 
         public bool Solved => Value == TrueValue || (Notes.Values.Count == 1 && Notes.Values.First() == TrueValue);
-        public bool Wrong => (Value != null && Value != TrueValue);
+        public bool Wrong => (Value != null && TrueValue != 0 && Value != TrueValue);
 
         private int? _hint;
         public int? Hint { get => _hint; set => SetValue(ref _hint, value); }

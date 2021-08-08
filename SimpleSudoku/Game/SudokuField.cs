@@ -95,7 +95,7 @@ namespace SimpleSudoku.Game
             var builder = new StringBuilder();
             foreach(var cell in Cells.To1DArray())
             {
-                builder.AppendFormat("{0};{1};{2};{3}\n", cell.Value.GetValueOrDefault(), cell.TrueValue, System.Convert.ToInt32(cell.StartCell), cell.Notes.Values.Count() > 0 ? cell.Notes.Values.Select(x => x.ToString()).Aggregate((x, y) => $"{x},{y}") : "");
+                builder.AppendFormat("{0};{1};{2};{3}\n", cell.Value.GetValueOrDefault(), cell.TrueValue, System.Convert.ToInt32(cell.IsStartCell), cell.Notes.Values.Count() > 0 ? cell.Notes.Values.Select(x => x.ToString()).Aggregate((x, y) => $"{x},{y}") : "");
             }
             var bytes = System.Text.Encoding.UTF8.GetBytes(builder.ToString());
             var base64String = System.Convert.ToBase64String(bytes);

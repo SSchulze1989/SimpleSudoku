@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SimpleSudoku.Game
@@ -13,6 +14,11 @@ namespace SimpleSudoku.Game
         {
             FailedCells = cells;
             FailType = type;
+        }
+
+        public override string ToString()
+        {
+            return FailType.ToString() + string.Join(", ", FailedCells.Select(x => $"C({x.Row},{x.Column})"));
         }
     }
 

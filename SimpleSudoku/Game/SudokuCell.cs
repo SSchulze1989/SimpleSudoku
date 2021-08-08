@@ -10,7 +10,7 @@ namespace SimpleSudoku.Game
         public int Column { get; }
         public int? Value { get; set; }
         public int TrueValue { get; private set; }
-        public bool StartCell { get; private set; }
+        public bool IsStartCell { get; private set; }
         public CellNote Notes { get; }
 
         internal SudokuCell(int row, int col)
@@ -45,6 +45,7 @@ namespace SimpleSudoku.Game
         {
             var newCell = new SudokuCell(Row, Column, Value);
             newCell.SetTrueValue(TrueValue);
+            newCell.SetStartCell(IsStartCell);
             foreach(var value in Notes.Values)
             {
                 newCell.Notes.Add(value);
@@ -54,7 +55,7 @@ namespace SimpleSudoku.Game
 
         internal void SetStartCell(bool isStartCell)
         {
-            StartCell = isStartCell;
+            IsStartCell = isStartCell;
         }
     }
 }

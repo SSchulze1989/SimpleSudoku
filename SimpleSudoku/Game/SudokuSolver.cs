@@ -7,13 +7,15 @@ namespace SimpleSudoku.Game
 {
     public class SudokuSolver
     {
+        private SudokuField OriginField { get; set; }
         public SudokuField SolverField { get; set; }
         //private static int solverCycle { get; set; }
 
         public SudokuSolver(SudokuField field)
         {
+            OriginField = field;
             SolverField = new SudokuField(field);
-            Reset();
+            ResetNotes();
         }
 
         private void SetNotesForCellValue(SudokuCell cell, int value)
@@ -68,8 +70,6 @@ namespace SimpleSudoku.Game
             return hintCells.ElementAt(rand.Next(hintCells.Count()));
         }
 
-
-
         public SudokuCell[] FillSolutions()
         {
             var filledCells = new List<SudokuCell>();
@@ -115,12 +115,18 @@ namespace SimpleSudoku.Game
             return changed;
         }
 
-        public void Reset()
+        public void ResetNotes()
         {
             foreach (var cell in SolverField.Cells.To1DArray())
             {
                 cell.Notes.SetAll();
             }
+        }
+
+        public void Reset()
+        {
+            SolverField = new SudokuField(OriginField);
+            ResetNotes();
         }
 
         public void ApplyNotes(SudokuField field)

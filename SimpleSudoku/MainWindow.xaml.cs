@@ -67,10 +67,52 @@ namespace SimpleSudoku
 
             if (fieldVM != null)
             {
-                using(var streamReader = new StreamReader(saveGame))
+                if (File.Exists(saveGame))
                 {
-                    var data = streamReader.ReadToEnd();
-                    fieldVM.LoadAction(data);
+                    using (var streamReader = new StreamReader(saveGame))
+                    {
+                        var data = streamReader.ReadToEnd();
+                        fieldVM.LoadAction(data);
+                    }
+                }
+            }
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is SudokuFieldViewModel fieldVM)
+            {
+                if (fieldVM.IsEditing)
+                {
+                    // Try to finish editing
+                    var result = fieldVM.FinishEditing(out IEnumerable<ValidationFail> validationFails);
+                    if (result == false)
+                    {
+                        // check if validation failed
+                        if (validationFails?.Count() > 0)
+                        {
+                            StringBuilder msgBuilder = new StringBuilder();
+                            msgBuilder.AppendLine("Can't accept current field! Reason: Validation Failed.");
+                            foreach(var fail in validationFails)
+                            {
+                                msgBuilder.AppendLine(fail.ToString());
+                            }
+                            MessageBox.Show(msgBuilder.ToString());
+                        }
+                        else
+                        {
+                            MessageBox.Show("Can't accept current field! Reason: No solution found.");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Edit successful!");
+                    }
+                }
+                else
+                {
+                    // start edit mode
+                    fieldVM.StartEditing();
                 }
             }
         }
